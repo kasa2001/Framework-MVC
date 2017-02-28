@@ -3,14 +3,22 @@
 
 class Model extends Database {
     protected $connection;
-    public function __construct()
+    protected $table;
+    public function __construct($model)
     {
         /*
-         * Function in test. If you download this framework change inquiry theregit remote add origin https://github.com/kasa2001/projects.git
+         * Function in test. If you download this framework change inquiry there
          * */
         $this->connection = new Database("projekt");
-        $this->data = $this->connection->request($this->connection->connect,"SELECT * FROM `users` WHERE `Nick` = 'Marianek'");
-        print_r($this->data);
+        $this->tableName($model);
+        $this->inquiry = $this->createInquiry($this->table->table,1);
+        $this->data = $this->request($this->connection);
+        echo $this->data;
+    }
+
+    public function tableName($model){
+        require_once '../app/models/table/'.$model.'Table.php';
+        $this->table=new UserTable();
     }
 
 }
