@@ -1,0 +1,13 @@
+<html>
+    <head>
+        <?php
+            $this->loadCss($css);
+            $this->loadJs($js);
+        ?>
+    </head>
+    <body>
+        <?php
+            $this->content($view,$data);
+        ?>
+    </body>
+</html>
