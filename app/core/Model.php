@@ -11,9 +11,9 @@ class Model extends Database {
          * */
         $this->connection = new Database("projekt");
         $this->tableName($model);
-        $this->inquiry = $this->createInquiry($this->table->table,1);
-        $this->data = $this->request($this->connection);
-        echo $this->data;
+        $this->connection->inquiry = $this->createInquiry($this->table->table,1);
+        $this->data = $this->connection->request($this->connection->connect);
+        print_r($this->data);
     }
 
     public function tableName($model){

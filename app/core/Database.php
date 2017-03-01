@@ -49,7 +49,7 @@ class Database extends mysqli {
     public function createInquiry($table, $choose){
         switch ($choose){
             case 1:
-                return "SELECT * FROM ".$table." WHERE `Nick` = 'Marianek'; ";
+                return "SELECT * FROM `".$table."` WHERE `Nick` = 'ziutek'";
                 break;
             case 2:
                 break;
