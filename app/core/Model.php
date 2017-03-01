@@ -13,14 +13,8 @@ class Model extends Database {
         $this->connection = new Database("projekt");
         $this->tableName($model);
         $data[0]='Id';
-        $data[1]='Nick';
-        $data[2]='EMAIL';
-        $data[3]='PASSWORD';
-        $data[4]='NULL';
-        $data[5]='kozłowski';
-        $data[6]='mietek';
-        $data[7]='kozłowski';
-        $this->connection->query = $this->createQuery($this->table->table,2,1,$data,2);
+        $data[1]='10';
+        $this->connection->query = $this->createQuery($this->table->table,3,1,$data,2);
         $this->data = $this->connection->request($this->connection->connect);
         print_r($this->connection->query);
     }

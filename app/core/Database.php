@@ -43,19 +43,19 @@ class Database{
             return NULL;
         }
         for($i=0; $i<($n/2); $i++){
-            $query=$query."`".$data[$i]."`";
+            $query.="`".$data[$i]."`";
             if (($i)!=(($n/2)-1)){
-                $query=$query.", ";
+                $query.=", ";
             }
         }
-        $query=$query.") VALUES (";
-        for($i; $i<$n; $i++){
-            $query=$query."'".$data[$i]."'";
+        $query.=") VALUES (";
+        for(; $i<$n; $i++){
+            $query.="'".$data[$i]."'";
             if (($i)!=($n-1)){
-                $query=$query.", ";
+                $query.=", ";
             }
         }
-        $query=$query.");";
+        $query.=");";
         return $query;
     }
 
@@ -69,38 +69,60 @@ class Database{
                 $i=1;
             }
             $n=count($data);
-            if ($i==$n){
-
-            }else if ($i<$n){
-                $query=$query."WHERE `";
+            if ($i<$n){
+                $query.="WHERE `";
             }else if ($i>$n){
                 echo 'Warning: Too small table in call function createQuery()';
                 return NULL;
             }
-            for ($i; $i<$n;$i+=2){
+            for (; $i<$n;$i+=2){
                 if ($i+1==$n){
-                    echo 'Warning: Too small table in call function createQuery() Check query: ';
-                    return $query;
+                    echo 'Warning: Too small table in call function createQuery()';
+                    return NULL;
                 }else{
-                    $query=$query.$data[$i]."` = '".$data[$i+1]."' ";
+                    $query.=$data[$i]."` = '".$data[$i+1]."' ";
                     if (($i+1)<($n-1)){
-                        $query=$query."AND `";
+                        $query.="AND `";
                     }
                 }
             }
         }
         if ($temp){
-            $query=$query."ORDER BY `".$data[0];
+            $query.="ORDER BY `".$data[0];
             if ($sort==1){
-                $query=$query."` ASC";
+                $query.="` ASC";
             }else if ($sort==2){
-                $query=$query."` DESC";
+                $query.="` DESC";
             }
         }
         return $query;
     }
 
-
+    public function createDeleteQuery($table, $modify, $data=[]){
+        $query="DELETE FROM ".$table." ";
+        if ($modify){
+            $i=0;
+            $n=count($data);
+            if ($i<$n){
+                $query.="WHERE `";
+            }else if ($i>$n){
+                echo 'Warning: Too small table in call function createQuery()';
+                return NULL;
+            }
+            for (;$i<$n;$i+=2){
+                if ($i+1==$n){
+                    echo 'Warning: Too small table in call function createQuery()';
+                    return NULL;
+                }else{
+                    $query.=$data[$i]."` = '".$data[$i+1]."' ";
+                    if (($i+1)<($n-1)){
+                        $query.="AND `";
+                    }
+                }
+            }
+        }
+        return $query;
+    }
 
     /**
      * Function which create a new query
@@ -119,7 +141,7 @@ class Database{
             case 2:
                 return $this->createInsertQuery($table,$data);
             case 3:
-                return "DELETE FROM `".$table."` WHERE `Nick` = 'mietek'";
+                return $this->createDeleteQuery($table,$modify,$data);
             case 4:
                 return "UPDATE `".$table."` SET `Nick` = 'miete' WHERE `Nick` = 'mietek';";
                 break;
