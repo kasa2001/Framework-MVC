@@ -2,7 +2,7 @@
 /**
  * Class supports MySQL only.
  * */
-class Database extends mysqli {
+class Database{
     protected $server;
     protected $login;
     protected $password;
@@ -32,13 +32,7 @@ class Database extends mysqli {
      * @return string table (return score of $inquiry)
      * */
     public function request($connect){
-        $this->data=$connect->query($this->inquiry);
-        $check = explode(' ', $this->inquiry);
-        if ($check[0]=='SELECT'){
-            return $this->data->fetch_assoc();
-        }
-        $this->connect->close();
-        return NULL;
+        return $connect->query($this->inquiry);
     }
     /**
      * Function which create a new inquiry
@@ -49,13 +43,13 @@ class Database extends mysqli {
     public function createInquiry($table, $choose){
         switch ($choose){
             case 1:
-                return "SELECT * FROM `".$table."` WHERE `Nick` = 'ziutek'";
-                break;
+                return "SELECT * FROM `".$table."`";
             case 2:
-                break;
+                return "INSERT INTO `".$table."` VALUES ('NULL','mietek','mietek@mietek.com','jakies')";
             case 3:
-                break;
+                return "DELETE FROM `".$table."` WHERE `Nick` = 'mietek'";
             case 4:
+                return "UPDATE `".$table."` SET `Nick` = 'miete' WHERE `Nick` = 'mietek';";
                 break;
             default:
                 echo 'Bad choose inquiry. Check second param in call method';
