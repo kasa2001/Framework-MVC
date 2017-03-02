@@ -10,8 +10,7 @@ class Controller
      * */
     public function model($model)
     {
-        require_once '../app/models/' . $model . '.php';
-
+        require_once '../app/models/table/' . $model . 'Table.php';
         return new $model();
     }
 

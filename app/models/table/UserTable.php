@@ -3,6 +3,7 @@
 class UserTable
 {
     public $table;
+    public $columns;
 
     public function __construct()
     {

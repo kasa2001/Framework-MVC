@@ -10,7 +10,7 @@ class Model extends Database
     public function __construct($model)
     {
         /*
-         * Function in test. If you download this framework change query there
+         * Construct in test.
          * */
         $this->connection = new Database("projekt");
         $this->tableName($model);
@@ -18,18 +18,19 @@ class Model extends Database
         $data[1] = 'zenon';
         $data[2] = 'Nick';
         $data[3] = 'Ziutek';
-        $this->connection->query = $this->createQuery($this->table->table, 1,1, $data);
+        $this->connection->query = $this->createQuery($this->table->table, 1, $data, "o");
         print_r($this->connection->query);
         echo '<br>';
-        $this->connection->query= $this->modifyWhere($this->connection->query,$data);
-//        $this->data = $this->connection->request($this->connection->connect);
-        print_r($this->connection->query);
+        $this->connection->query= $this->modifyWhere($this->connection->query,$data,"a");
+        $this->connection->data = $this->connection->request($this->connection->connect);
+        print_r($this->connection->data);
     }
 
     public function tableName($model)
     {
-        require_once '../app/models/table/' . $model . 'Table.php';
-        $this->table = new UserTable();
+        $model.="Table";
+        require_once '../app/models/table/' . $model . '.php';
+        $this->table = new $model();
     }
 
     public function typeOfQuery($type)
