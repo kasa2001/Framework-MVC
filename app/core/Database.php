@@ -116,7 +116,11 @@ class Database{
                 }else{
                     $query.=$data[$i]."` = '".$data[$i+1]."' ";
                     if (($i+1)<($n-1)){
-                        $query.="AND `";
+                        if ($modify==1){
+                            $query.="AND `";
+                        }else{
+                            $query.="OR `";
+                        }
                     }
                 }
             }
@@ -124,7 +128,7 @@ class Database{
         return $query;
     }
 
-    public function createUpdateQuery($table, $data){
+    public function createUpdateQuery($table, $modify, $data){
         $query="UPDATE `".$table."` SET `".$data[0]."` = '".$data[1]."' WHERE `";
         $n=count($data);
         for ($i=2;$i<$n;$i+=2){
@@ -134,7 +138,12 @@ class Database{
             }else{
                 $query.=$data[$i]."` = '".$data[$i+1]."' ";
                 if (($i+1)<($n-1)){
-                    $query.="AND `";
+                    if ($modify==1){
+                        $query.="AND `";
+                    }else{
+                        $query.="OR `";
+                    }
+
                 }
             }
         }
@@ -160,7 +169,7 @@ class Database{
             case 3:
                 return $this->createDeleteQuery($table,$modify,$data);
             case 4:
-                return $this->createUpdateQuery($table, $data);
+                return $this->createUpdateQuery($table, $modify, $data);
                 break;
             default:
                 echo 'Bad choose query. Check second param in call method createQuery()';
