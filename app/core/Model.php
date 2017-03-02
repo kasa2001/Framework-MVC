@@ -12,9 +12,11 @@ class Model extends Database {
          * */
         $this->connection = new Database("projekt");
         $this->tableName($model);
-        $data[0]='Id';
-        $data[1]='10';
-        $this->connection->query = $this->createQuery($this->table->table,3,1,$data,2);
+        $data[0]='Nick';
+        $data[1]='zenon';
+        $data[2]='Nick';
+        $data[3]='Ziutek';
+        $this->connection->query = $this->createQuery($this->table->table,4,1,$data,2);
         $this->data = $this->connection->request($this->connection->connect);
         print_r($this->connection->query);
     }

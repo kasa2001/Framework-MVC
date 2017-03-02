@@ -29,7 +29,7 @@ class Database{
     /**
      * Function which send query to database and get result query
      * @param $connect Database data about connection
-     * @return string table (return score of $query)
+     * @return object array (return score of $query)
      * */
     public function request($connect){
         return $connect->query($this->query);
@@ -124,6 +124,23 @@ class Database{
         return $query;
     }
 
+    public function createUpdateQuery($table, $data){
+        $query="UPDATE `".$table."` SET `".$data[0]."` = '".$data[1]."' WHERE `";
+        $n=count($data);
+        for ($i=2;$i<$n;$i+=2){
+            if ($i+1==$n){
+                echo 'Warning: Too small table in call function createQuery()';
+                return NULL;
+            }else{
+                $query.=$data[$i]."` = '".$data[$i+1]."' ";
+                if (($i+1)<($n-1)){
+                    $query.="AND `";
+                }
+            }
+        }
+        return $query;
+    }
+
     /**
      * Function which create a new query
      * @param $table string data about load table
@@ -143,10 +160,10 @@ class Database{
             case 3:
                 return $this->createDeleteQuery($table,$modify,$data);
             case 4:
-                return "UPDATE `".$table."` SET `Nick` = 'miete' WHERE `Nick` = 'mietek';";
+                return $this->createUpdateQuery($table, $data);
                 break;
             default:
-                echo 'Bad choose query. Check second param in call method';
+                echo 'Bad choose query. Check second param in call method createQuery()';
         }
         return $query;
     }
