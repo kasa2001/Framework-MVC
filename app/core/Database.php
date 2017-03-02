@@ -35,11 +35,30 @@ class Database{
         return $connect->query($this->query);
     }
 
+    public function where($query, $i, $n, $data, $modify){
+        for (; $i<$n;$i+=2){
+            if ($i+1==$n){
+                echo 'Warning: Too small or big array in call function createQuery()';
+                return NULL;
+            }else{
+                $query.=$data[$i]."` = '".$data[$i+1]."' ";
+                if (($i+1)<($n-1)){
+                    if ($modify==1){
+                        $query.="AND `";
+                    }else if ($modify >1){
+                        $query.="OR `";
+                    }
+                }
+            }
+        }
+        return $query;
+    }
+
     public function createInsertQuery($table, $data=[]){
         $query="INSERT INTO `".$table."` ( ";
         $n=count($data);
         if ($n%2!=0){
-            echo "Warning: param n is not even. Check table";
+            echo "Warning: param n is not even. Check data array in function createQuery()";
             return NULL;
         }
         for($i=0; $i<($n/2); $i++){
@@ -63,7 +82,7 @@ class Database{
         $temp=0;
         $i=0;
         $query="SELECT * FROM `".$table."` ";
-        if ($modify!=0){
+        if ($modify){
             if ($sort!=0){
                 $temp=1;
                 $i=1;
@@ -75,17 +94,7 @@ class Database{
                 echo 'Warning: Too small table in call function createQuery()';
                 return NULL;
             }
-            for (; $i<$n;$i+=2){
-                if ($i+1==$n){
-                    echo 'Warning: Too small table in call function createQuery()';
-                    return NULL;
-                }else{
-                    $query.=$data[$i]."` = '".$data[$i+1]."' ";
-                    if (($i+1)<($n-1)){
-                        $query.="AND `";
-                    }
-                }
-            }
+            $query = $this->where($query,$i,$n,$data,$modify);
         }
         if ($temp){
             $query.="ORDER BY `".$data[0];
@@ -99,54 +108,22 @@ class Database{
     }
 
     public function createDeleteQuery($table, $modify, $data=[]){
-        $query="DELETE FROM ".$table." ";
-        if ($modify){
+        $query="DELETE FROM `".$table."` ";
             $i=0;
             $n=count($data);
             if ($i<$n){
                 $query.="WHERE `";
             }else if ($i>$n){
-                echo 'Warning: Too small table in call function createQuery()';
+                echo 'Warning: Too small or big array in call function createQuery()';
                 return NULL;
             }
-            for (;$i<$n;$i+=2){
-                if ($i+1==$n){
-                    echo 'Warning: Too small table in call function createQuery()';
-                    return NULL;
-                }else{
-                    $query.=$data[$i]."` = '".$data[$i+1]."' ";
-                    if (($i+1)<($n-1)){
-                        if ($modify==1){
-                            $query.="AND `";
-                        }else{
-                            $query.="OR `";
-                        }
-                    }
-                }
-            }
-        }
+            $query = $this->where($query,$i,$n,$data,$modify);
         return $query;
     }
 
     public function createUpdateQuery($table, $modify, $data){
         $query="UPDATE `".$table."` SET `".$data[0]."` = '".$data[1]."' WHERE `";
-        $n=count($data);
-        for ($i=2;$i<$n;$i+=2){
-            if ($i+1==$n){
-                echo 'Warning: Too small table in call function createQuery()';
-                return NULL;
-            }else{
-                $query.=$data[$i]."` = '".$data[$i+1]."' ";
-                if (($i+1)<($n-1)){
-                    if ($modify==1){
-                        $query.="AND `";
-                    }else{
-                        $query.="OR `";
-                    }
-
-                }
-            }
-        }
+        $query = $this->where($query,2,count($data),$data,$modify);
         return $query;
     }
 

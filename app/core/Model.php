@@ -17,9 +17,8 @@ class Model extends Database {
         $data[2]='Nick';
         $data[3]='Ziutek';
         $data[4]='Nick';
-        $data[5]='Ziutek';
-        $this->connection->query = $this->createQuery($this->table->table,4,0,$data,2);
-        $this->data = $this->connection->request($this->connection->connect);
+        $this->connection->query = $this->createQuery($this->table->table,2,2,$data,2);
+//        $this->data = $this->connection->request($this->connection->connect);
         print_r($this->connection->query);
     }
 
