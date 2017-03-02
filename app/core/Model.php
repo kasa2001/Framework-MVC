@@ -1,10 +1,12 @@
 <?php
 
 
-class Model extends Database {
+class Model extends Database
+{
     protected $connection;
     protected $table;
     protected $type;
+
     public function __construct($model)
     {
         /*
@@ -12,21 +14,26 @@ class Model extends Database {
          * */
         $this->connection = new Database("projekt");
         $this->tableName($model);
-        $data[0]='Nick';
-        $data[1]='zenon';
-        $data[2]='Nick';
-        $data[3]='Ziutek';
-        $data[4]='Nick';
-        $this->connection->query = $this->createQuery($this->table->table,2,2,$data,2);
+        $data[0] = 'Nick';
+        $data[1] = 'zenon';
+        $data[2] = 'Nick';
+        $data[3] = 'Ziutek';
+        $this->connection->query = $this->createQuery($this->table->table, 1,1, $data);
+        print_r($this->connection->query);
+        echo '<br>';
+        $this->connection->query= $this->modifyWhere($this->connection->query,$data);
 //        $this->data = $this->connection->request($this->connection->connect);
         print_r($this->connection->query);
     }
 
-    public function tableName($model){
-        require_once '../app/models/table/'.$model.'Table.php';
-        $this->table=new UserTable();
+    public function tableName($model)
+    {
+        require_once '../app/models/table/' . $model . 'Table.php';
+        $this->table = new UserTable();
     }
-    public function typeOfQuery($type){
+
+    public function typeOfQuery($type)
+    {
         return $type;
     }
 

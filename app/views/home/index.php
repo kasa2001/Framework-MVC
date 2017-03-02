@@ -1,1 +1,1 @@
-Hello <?=$data?>
+<!--Hello--> <?//=$data?>
