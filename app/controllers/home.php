@@ -7,7 +7,7 @@ class Home extends Controller
 {
     public function index($name = '')
     {
-        $user = new model('User');
+//        $user = new model('User');
         $css = "main home";
         $js = "main home";
         $this->view('home/index', NULL, $css, $js);

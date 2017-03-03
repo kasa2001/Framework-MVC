@@ -7,4 +7,10 @@ class Session
     {
         session_start();
     }
+
+    public function writeToSession($data)
+    {
+
+    }
+
 }

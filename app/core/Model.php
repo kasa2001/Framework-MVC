@@ -14,15 +14,16 @@ class Model extends Database
          * */
         $this->connection = new Database("projekt");
         $this->tableName($model);
-        $data[0] = 'Nick';
-        $data[1] = 'zenon';
-        $data[2] = 'Nick';
-        $data[3] = 'Ziutek';
-        $this->connection->query = $this->createQuery($this->table->table, 1, $data, "o");
+        $data[0]='Nick';
+        $data[1]='zenon';
+        $this->connection->query = $this->createQuery($this->table->table, 1, NULL);
+
         print_r($this->connection->query);
         echo '<br>';
-        $this->connection->query= $this->modifyWhere($this->connection->query,$data,"a");
+
+//        $this->connection->query= $this->modifyWhere($this->connection->query,$data,"a");
         $this->connection->data = $this->connection->request($this->connection->connect);
+        $this->connection->getResultRequest();
         print_r($this->connection->data);
     }
 

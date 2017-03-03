@@ -3,7 +3,7 @@
 /**
  * Class supports MySQL only.
  * */
-class Database
+class Database extends Session
 {
     /**
      * @param $server string. It is a data about server
@@ -40,6 +40,8 @@ class Database
      * */
     protected $data;
 
+    protected $session;
+
     /**
      * Connect with database
      * @param $base string database
@@ -57,7 +59,7 @@ class Database
     }
 
     /**
-     * Function which create a new query
+     * Method which create a new query
      * @param $table string data about load table
      * @param $choose integer select type of query (1 SELECT, 2 INSERT, 3 DELETE, 4 UPDATE)
      * @param $modify integer degree modify the query (implicitly 0)
@@ -83,7 +85,7 @@ class Database
     }
 
     /**
-     * Function where create SELECT query
+     * Method where create SELECT query
      * @param $table string. Data about table
      * @param $modify
      * @param $data array string. Additional data (implicitly empty array)
@@ -104,7 +106,7 @@ class Database
     }
 
     /**
-     * Function which add to query data about sort
+     * Method which add to query data about sort
      * @param $query string. It is a query
      * @param $data array string. Additional data (implicitly empty array)
      * @param $sort integer. Information how sort request
@@ -118,7 +120,7 @@ class Database
     }
 
     /**
-     * Function where create DELETE query
+     * Method where create DELETE query
      * @param $table string. Data about table
      * @param $modify
      * @param $data array string. Additional data (implicitly empty array)
@@ -135,7 +137,7 @@ class Database
     }
 
     /**
-     * Function where create UPDATE query
+     * Method where create UPDATE query
      * @param $table string. Data about table
      * @param $modify
      * @param $data array string. Additional data (implicitly empty array)
@@ -149,7 +151,7 @@ class Database
     }
 
     /**
-     * Function which add to query WHERE
+     * Method which add to query WHERE
      * @param $query string. It is a query
      * @param $i integer. It is a control param
      * @param $n integer. It is a size of array $data
@@ -173,7 +175,7 @@ class Database
     }
 
     /**
-     * Function which manipulate query when was generated
+     * Method which manipulate query when was generated
      * @param $query string. It is a query
      * @param $data (table string) additional data (implicitly empty array)
      * @param $modify string. It is data how modify query (implicitly "a")
@@ -189,7 +191,7 @@ class Database
     }
 
     /**
-     * Function which search key word WHERE in query
+     * Method which search key word WHERE in query
      * @param $query string. It is a query
      * @return bool. Return true if function found key word or false when not found word WHERE
      * */
@@ -206,7 +208,7 @@ class Database
     }
 
     /**
-     * Function recursively modify query
+     * Method recursively modify query
      * @param $query string. It is a query
      * @param $i integer. It is a control param
      * @param $data array string. Additional data
@@ -228,7 +230,7 @@ class Database
     }
 
     /**
-     * This function slide ORDER BY if exists
+     * This method slide ORDER BY if exists
      * @param $query string. It is a query
      * @param $i integer. It is a control param
      * @return string. Return slided query
@@ -244,7 +246,7 @@ class Database
     }
 
     /**
-     * Mission this function is a replace data to query
+     * Mission this method is a replace data to query
      * @param $query string. It is a query
      * @param $modify string. Data about form of modification
      * @param $i integer. It is a control param
@@ -265,7 +267,7 @@ class Database
     }
 
     /**
-     * Function where create UPDATE query
+     * Method where create UPDATE query
      * @param $table string. Data about table
      * @param $data array string. Additional data (implicitly empty array)
      * @return string. Return query
@@ -283,7 +285,7 @@ class Database
     }
 
     /**
-     * Function which add data about columns to UPDATE query
+     * Method which add data about columns to UPDATE query
      * @param $query string. It is a query
      * @param $i integer
      * @param $n integer
@@ -302,7 +304,7 @@ class Database
     }
 
     /**
-     * Function which add data about row to UPDATE query
+     * Method which add data about row to UPDATE query
      * @param $query string. It is a query
      * @param $i integer. It is a control param
      * @param $n integer. It is a size of array $data
@@ -321,7 +323,7 @@ class Database
     }
 
     /**
-     * Function which informing about problem whit array
+     * Method which informing about problem whit array
      * @return null
      * */
     public function warning()
@@ -331,22 +333,35 @@ class Database
     }
 
     /**
-     * Function which informing about problem whit key word WHERE
+     * Method which informing about problem whit key word WHERE
      * @return null
      * */
     public function warningWhere()
     {
-        echo 'Warning: Key word WHERE not found. Please check called function in param 3 createQuery()';
+        echo 'Warning: Key word WHERE not found. Please check in called method createQuery() param 3 or call method where()';
         return NULL;
     }
 
     /**
-     * Function which send query to database and get result query
+     * Method which send query to database and get result query
      * @param $connect Database data about connection
      * @return object array (return score of $query)
      * */
     public function request($connect)
     {
         return $connect->query($this->query);
+    }
+
+    /**
+     * Method get data with object mysqli_result to session
+     * */
+    public function getResultRequest()
+    {
+        $this->session = new Session();
+        while ($this->session = $this->data->fetch_assoc()) {
+            print_r($this->session);
+            $this->session->writeToSession($this->session);
+            echo '<br>';
+        }
     }
 }
