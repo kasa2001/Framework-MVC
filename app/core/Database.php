@@ -3,58 +3,57 @@
 /**
  * Class supports MySQL only.
  * */
-class Database extends Session
+class Database extends Config
 {
     /**
-     * @param $server string. It is a data about server
+     * @var $server string. It is a data about server
      * */
     protected $server;
 
     /**
-     * @param $login string. It is a data about database user
+     * @var $login string. It is a data about database user
      * */
     protected $login;
 
     /**
-     * @param $password string. It is a data about password to database
+     * @var $password string. It is a data about password to database
      * */
     protected $password;
 
     /**
-     * @param $base string. It is a data about database
+     * @var $base string. It is a data about database
      * */
     protected $base;
 
     /**
-     * @param $connect object. It is a object class mysqli
+     * @var $connect object. It is a object class mysqli
      * */
     protected $connect;
 
     /**
-     * @param $query string. It is a data about query
+     * @var $query string. It is a data about query
      * */
     protected $query;
 
     /**
-     * @param $server string. It is a data about data to create query
+     * @var $server string. It is a data about data to create query
      * */
     protected $data;
 
     protected $session;
 
+    protected $result;
+
     /**
      * Connect with database
-     * @param $base string database
-     * @param $server string choose server (implicitly localhost)
-     * @param $login  string choose user database (implicitly root)
-     * @param $password string write password to database (implicitly NULL)
      */
-    public function __construct($base, $server = 'localhost', $login = 'root', $password = "")
+    public function __construct()
     {
-        $this->server = $server;
-        $this->login = $login;
-        $this->password = $password;
-        $this->base = $base;
+        parent::__construct();
+        $this->server = $this->config['database']['host'];
+        $this->login = $this->config['database']['user'];
+        $this->password = $this->config['database']['password'];
+        $this->base = $this->config['database']['database'];
         $this->connect = new mysqli($this->server, $this->login, $this->password, $this->base);
     }
 
@@ -358,10 +357,6 @@ class Database extends Session
     public function getResultRequest()
     {
         $this->session = new Session();
-        while ($this->session = $this->data->fetch_assoc()) {
-            print_r($this->session);
-            $this->session->writeToSession($this->session);
-            echo '<br>';
-        }
+        while ($this->result = $this->data->fetch_assoc()) $this->session->writeToSession($this->result);
     }
 }

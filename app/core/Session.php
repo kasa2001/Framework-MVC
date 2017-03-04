@@ -3,14 +3,10 @@
 
 class Session
 {
-    public function __construct()
-    {
-        session_start();
-    }
-
     public function writeToSession($data)
     {
-
+        $_SESSION=$data;
+        print_r($_SESSION);
+        echo '<br>';
     }
-
 }

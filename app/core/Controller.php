@@ -1,7 +1,7 @@
 <?php
 
 
-class Controller
+class Controller extends Config
 {
     /**
      * Function where add model and connect whit database if exists $_POST
@@ -23,6 +23,7 @@ class Controller
      * */
     public function view($view, $data = [], $css, $js)
     {
+        if ($this->config['system']['session-start']==true)session_start();
         require_once '../app/views/layout/layout.php';
     }
 
