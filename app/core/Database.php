@@ -344,7 +344,7 @@ class Database extends Config
     /**
      * Method which send query to database and get result query
      * @param $connect Database data about connection
-     * @return object array (return score of $query)
+     * @return object return score of query
      * */
     public function request($connect)
     {
@@ -356,7 +356,10 @@ class Database extends Config
      * */
     public function getResultRequest()
     {
-        $this->session = new Session();
-        while ($this->result = $this->data->fetch_assoc()) $this->session->writeToSession($this->result);
+        if ($this->data->num_rows==1){
+            $this->session = new Session();
+            $this->result = $this->data->fetch_assoc();
+            $this->session->writeToSession($this->result);
+        }else echo 'Session can write only one record <br>';
     }
 }

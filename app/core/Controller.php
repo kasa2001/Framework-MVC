@@ -1,7 +1,7 @@
 <?php
 
 
-class Controller extends Config
+class Controller
 {
     /**
      * Function where add model and connect whit database if exists $_POST
@@ -23,7 +23,6 @@ class Controller extends Config
      * */
     public function view($view, $data = [], $css, $js)
     {
-        if ($this->config['system']['session-start']==true)session_start();
         require_once '../app/views/layout/layout.php';
     }
 
@@ -46,14 +45,7 @@ class Controller extends Config
     {
         if ($css != "") {
             $table = explode(' ', $css);
-            $how = count(explode('/', $_SERVER['REQUEST_URI']));
-            $address = NULL;
-            if ($how > 4) {
-                for ($j = 0; $j < ($how - 4); $j++) {
-                    $get = "../";
-                    $address = $address . $get;
-                }
-            }
+            $address = $this->address();
             for ($i = 0; $i < (count($table)); $i++) {
                 echo '<link href="' . $address . 'css/' . $table[$i] . '.css" rel="stylesheet" type="text/css">';
             }
@@ -68,17 +60,22 @@ class Controller extends Config
     {
         if ($js != "") {
             $table = explode(' ', $js);
-            $how = count(explode('/', $_SERVER['REQUEST_URI']));
-            $address = NULL;
-            if ($how > 4) {
-                for ($j = 0; $j < ($how - 4); $j++) {
-                    $add = "../";
-                    $address = $address . $add;
-                }
-            }
+            $address = $this->address();
             for ($i = 0; $i < (count($table)); $i++) {
                 echo '<script src="' . $address . 'js/' . $table[$i] . 'Controller.js" type="text/JavaScript"></script>';
             }
         }
+    }
+
+    public function address(){
+        $how = count(explode('/', $_SERVER['REQUEST_URI']));
+        $address = NULL;
+        if ($how > 4) {
+            for ($j = 0; $j < ($how - 4); $j++) {
+                $add = "../";
+                $address = $address . $add;
+            }
+        }
+        return $address;
     }
 }
