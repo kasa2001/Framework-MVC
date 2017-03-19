@@ -7,4 +7,8 @@ class Session
     {
         $_SESSION=$data;
     }
+
+    public function destroySession(){
+        unset($_SESSION);
+    }
 }

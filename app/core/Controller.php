@@ -6,11 +6,12 @@ class Controller
     /**
      * Function where add model and connect whit database if exists $_POST
      * @param $model - how model
-     * @return model (return new model from view)
+     * @return object. Return new model from view
      * */
-    public function model($model)
+    public function loadModel($model)
     {
-        require_once '../app/models/table/' . $model . 'Table.php';
+        $model.="Table";
+        require_once '../app/models/' . $model . '.php';
         return new $model();
     }
 

@@ -276,7 +276,7 @@ class Database extends Config
         $query = "INSERT INTO `" . $table . "` ( ";
         $n = count($data);
         if ($n % 2 != 0) return $this->warning();
-        $query = $this->columns($query, 0, $n, $data);
+        $query = $this->columnsUpdate($query, 0, $n, $data);
         $query .= ") VALUES (";
         $query = $this->values($query, ($n / 2), $n, $data);
         $query .= ");";
@@ -291,7 +291,7 @@ class Database extends Config
      * @param $data (table string) additional data (implicitly empty array)
      * @return string. Return query
      * */
-    public function columns($query, $i, $n, $data = [])
+    public function columnsUpdate($query, $i, $n, $data = [])
     {
         for (; $i < ($n / 2); $i++) {
             $query .= "`" . $data[$i] . "`";
@@ -360,6 +360,6 @@ class Database extends Config
             $this->session = new Session();
             $this->result = $this->data->fetch_assoc();
             $this->session->writeToSession($this->result);
-        }else echo 'Session can write only one record <br>';
+        }else echo '<b>Warning:</b> Session can write only one record <br>';
     }
 }
