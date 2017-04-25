@@ -1,22 +1,22 @@
 <?php
 
 
-class Controller
+class Controller extends Config
 {
     /**
-     * Function where add model and connect whit database if exists $_POST
+     * Method where add model and connect whit database if exists $_POST
      * @param $model - how model
      * @return object. Return new model from view
      * */
     public function loadModel($model)
     {
-        $model.="Table";
+        $model .= "Table";
         require_once '../app/models/' . $model . '.php';
         return new $model();
     }
 
     /**
-     * Function which load layout
+     * Method which load layout
      * @param $view - add this view
      * @param $data - current information
      * @param $css (table where is save all CSS from view)
@@ -28,7 +28,7 @@ class Controller
     }
 
     /**
-     * Function which load current view
+     * Method which load current view
      * @param $view (load this view)
      * @param $data (data for current view)
      * */
@@ -39,7 +39,7 @@ class Controller
     }
 
     /**
-     * Function which add CSS
+     * Method which add CSS
      * @param $css (table where is save all CSS from view)
      */
     public function loadCss($css)
@@ -54,7 +54,7 @@ class Controller
     }
 
     /**
-     * Function which add JavaScript
+     * Method which add JavaScript
      * @param $js (table where is save all JavaScript from view)
      */
     public function loadJs($js)
@@ -68,7 +68,8 @@ class Controller
         }
     }
 
-    public function address(){
+    public function address()
+    {
         $how = count(explode('/', $_SERVER['REQUEST_URI']));
         $address = NULL;
         if ($how > 4) {
@@ -78,5 +79,16 @@ class Controller
             }
         }
         return $address;
+    }
+
+    /**
+     * Method load title page
+     * */
+    public function loadTitle(){
+        echo "<title>".$this->config["system"]["default-title"]."</title>";
+    }
+
+    public function loadCharset(){
+        echo "<meta charset='".$this->config["system"]["charset"]."'>";
     }
 }

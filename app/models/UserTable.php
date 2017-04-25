@@ -3,7 +3,9 @@
 class UserTable extends Model
 {
     protected $database;
-
+/**
+ * Construct create new object -> Model
+ * */
     public function __construct()
     {
         $this->database = new Model($this->table(), $this->columns());

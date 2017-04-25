@@ -1,13 +1,15 @@
 <html>
     <head>
         <?php
+            $this->loadTitle();
+            $this->loadCharset();
             $this->loadCss($css);
-            $this->loadJs($js);
         ?>
     </head>
     <body>
         <?php
             $this->content($view,$data);
+            $this->loadJs($js);
         ?>
     </body>
 </html>

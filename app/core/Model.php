@@ -22,14 +22,9 @@ class Model extends Database
 //        $this->connection->query= $this->modifyWhere($this->connection->query,$data,"a");
         $this->connection->data = $this->connection->request($this->connection->connect);
 //        $this->connection->getResultRequest();
-        print_r($this->connection->data);
-        print_r($_SESSION);
+//        print_r($this->connection->data);
+//        print_r($_SESSION);
 
-    }
-
-    public function typeOfQuery($type)
-    {
-        return $type;
     }
 
 }

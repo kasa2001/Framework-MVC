@@ -9,7 +9,8 @@ class Home extends Controller
     {
         $user = $this->loadModel('User');
         $css = "main home";
-        $js = "";
+        $js = "main home";
         $this->view('home/index', NULL, $css, $js);
     }
+
 }
