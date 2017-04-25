@@ -12,6 +12,7 @@ class Model extends Database
     {
         /*
          * Construct in test.
+         *
          * */
         $data[0]='zenon';
         $data[1]='zenon';
