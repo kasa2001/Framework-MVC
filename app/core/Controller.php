@@ -84,11 +84,31 @@ class Controller extends Config
     /**
      * Method load title page
      * */
-    public function loadTitle(){
-        echo "<title>".$this->config["system"]["default-title"]."</title>";
+    public function loadTitle()
+    {
+        echo "<title>" . $this->config["system"]["default-title"] . "</title>";
     }
 
-    public function loadCharset(){
-        echo "<meta charset='".$this->config["system"]["charset"]."'>";
+    public function loadCharset()
+    {
+        echo "<meta charset='" . $this->config["system"]["charset"] . "'>";
+    }
+
+    public function loadAnchor($name, $data)
+    {
+        echo "<a href='" . $this->createHyperReference() . $data . "'>" . $name . "</a>";
+    }
+
+    public function getURI()
+    {
+        return $_SERVER["REQUEST_URI"];
+    }
+
+    public function createHyperReference()
+    {
+        $address = explode("/", $this->getURI());
+        $data = "/";
+        for ($i = 1; $i < (count($address) - 2); $i++) $data .= $address[$i] . "/";
+        return $data;
     }
 }
