@@ -62,6 +62,8 @@ class Controller extends Config
         if ($js != "") {
             $table = explode(' ', $js);
             $address = $this->address();
+            echo '<script src="' . $address . 'js/jquery-3.2.1.min.js" type="text/JavaScript"></script>';
+            echo '<script src="' . $address . 'js/ajaxController.js" type="text/JavaScript"></script>';
             for ($i = 0; $i < (count($table)); $i++) {
                 echo '<script src="' . $address . 'js/' . $table[$i] . 'Controller.js" type="text/JavaScript"></script>';
             }
@@ -94,7 +96,10 @@ class Controller extends Config
         echo "<meta charset='" . $this->config["system"]["charset"] . "'>";
     }
 
-    public function loadAnchor($name, $data)
+    /**
+     * Method create element a in view
+     * */
+    public function loadA($name, $data)
     {
         echo "<a href='" . $this->createHyperReference() . $data . "'>" . $name . "</a>";
     }

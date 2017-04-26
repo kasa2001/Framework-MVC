@@ -1,1 +1,3 @@
-alert("JavaScript");
+$(document).ready(function () {
+   alert("działaj działaj działaj");
+});
