@@ -1,4 +1,5 @@
-<html>
+<!doctype html>
+<html <?php $this->loadLanguage()?>>
     <head>
         <?php
             $this->loadTitle();

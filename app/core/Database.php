@@ -36,7 +36,7 @@ class Database extends Config
     protected $query;
 
     /**
-     * @var $server string. It is a data about data to create query
+     * @var $data array. It is a data about data to create query
      * */
     protected $data;
 
@@ -50,6 +50,7 @@ class Database extends Config
     public function __construct()
     {
         parent::__construct();
+        $this->data = $this->getFormData();
         $this->server = $this->config['database']['host'];
         $this->login = $this->config['database']['user'];
         $this->password = $this->config['database']['password'];
@@ -61,7 +62,7 @@ class Database extends Config
      * Method which create a new query
      * @param $table string data about load table
      * @param $choose integer select type of query (1 SELECT, 2 INSERT, 3 DELETE, 4 UPDATE)
-     * @param $modify integer degree modify the query (implicitly 0)
+     * @param $modify integer degree modify the query (implicitly null)
      * @param $data array string. Additional data (implicitly empty array)
      * @param $sort integer sort score query (implicitly 0)
      * @return string return generated query
@@ -161,13 +162,13 @@ class Database extends Config
     public function where($query, $i, $n, $data = [], $modify)
     {
         $query .= "WHERE `";
-        for (; $i < $n; $i += 2) {
+        for (; $i < $n; $i ++) {
             if ($i + 1 == $n) return $this->warning();
             else {
-                $query .= $data[$i] . "` = '" . $data[$i + 1] . "' ";
+                $query .= $data[$i] . "` = '" . $data[$n - 1] . "' ";
                 if (($i + 1) < ($n - 1) and $modify == "a") $query .= "AND `";
                 else if (($i + 1) < ($n - 1) and $modify == "o") $query .= "OR `";
-                else break;
+                $n--;
             }
         }
         return $query;
@@ -356,10 +357,22 @@ class Database extends Config
      * */
     public function getResultRequest()
     {
-        if ($this->data->num_rows==1){
+        if ($this->data->num_rows == 1) {
             $this->session = new Session();
             $this->result = $this->data->fetch_assoc();
             $this->session->writeToSession($this->result);
-        }else echo '<b>Warning:</b> Session can write only one record <br>';
+        } else echo '<b>Warning:</b> Session can write only one record <br>';
+    }
+
+    public function getFormData($data = [], $i=0)
+    {
+        if ($_POST != null){
+            foreach ($_POST as $value){
+                $data [$i]=$value;
+                $i++;
+            }
+            return $data;
+        }
+        else return null;
     }
 }

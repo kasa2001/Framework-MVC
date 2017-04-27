@@ -5,10 +5,11 @@ class Session
 {
     public function writeToSession($data)
     {
-        $_SESSION=$data;
+        $_SESSION = $data;
     }
 
-    public function destroySession(){
+    public function destroySession()
+    {
         unset($_SESSION);
     }
 }

@@ -72,7 +72,7 @@ class Controller extends Config
 
     public function address()
     {
-        $how = count(explode('/', $_SERVER['REQUEST_URI']));
+        $how = count(explode('/', $this->getURI()));
         $address = NULL;
         if ($how > 4) {
             for ($j = 0; $j < ($how - 4); $j++) {
@@ -96,12 +96,28 @@ class Controller extends Config
         echo "<meta charset='" . $this->config["system"]["charset"] . "'>";
     }
 
+    public function loadLanguage()
+    {
+        echo "lang='" . $this->config["system"]["default-language"] . "'";
+    }
+
     /**
      * Method create element a in view
+     * @param name - string
+     * @param data - string
+     * @param class - array string
      * */
-    public function loadA($name, $data)
+    public function addA($name, $data, $class = null)
     {
-        echo "<a href='" . $this->createHyperReference() . $data . "'>" . $name . "</a>";
+        echo "<a href='" . $this->createHyperReference() . $data . "'";
+        if (count($class) == 0) echo ">" . $name . "</a>";
+        else {
+            echo "class='";
+            for ($i = 0; $i < count($class); $i++) {
+                echo $class[$i] . " ";
+            }
+            echo "'>" . $name . "</a>";
+        }
     }
 
     public function getURI()
@@ -115,5 +131,21 @@ class Controller extends Config
         $data = "/";
         for ($i = 1; $i < (count($address) - 2); $i++) $data .= $address[$i] . "/";
         return $data;
+    }
+
+    /**
+     * Methods create form
+     * @param $action string - link to another page
+     * */
+    public function startForm($action = null)
+    {
+        echo "<form method='post'";
+        if ($action == null) echo ">";
+        else echo " action='" . $this->createHyperReference() . $action . "'>";
+    }
+
+    public function endForm()
+    {
+        echo "</form>";
     }
 }

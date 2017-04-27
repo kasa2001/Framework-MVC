@@ -8,7 +8,7 @@ class UserTable extends Model
  * */
     public function __construct()
     {
-        $this->database = new Model($this->table(), $this->columns());
+        $this->database = new Model($this->table(), $this->login());
     }
 
     public function table()
@@ -22,6 +22,12 @@ class UserTable extends Model
         $columns[1] = 'Nick';
         $columns[2] = 'EMAIL';
         $columns[3] = 'PASSWORD';
+        return $columns;
+    }
+
+    public function login(){
+        $columns[0] = 'PASSWORD';
+        $columns[1] = 'Nick';
         return $columns;
     }
 }
