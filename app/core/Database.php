@@ -375,8 +375,15 @@ class Database extends Config
                 $data [$i]=$value;
                 $i++;
             }
-            return $data;
+            if ($this->analyze($data)) return null;
+            else return $data;
         }
         else return null;
+    }
+    public function analyze($data) {
+        foreach ($data as $datum){
+            if (strpos($datum,"--") || strpos($datum,"'")) return true;
+        }
+        return false;
     }
 }
