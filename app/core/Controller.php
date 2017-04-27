@@ -27,6 +27,17 @@ class Controller extends Config
         require_once '../app/views/layout/layout.php';
     }
 
+
+    /**
+     * Method add element to view
+     * @param $name string - file name
+     * @param $directory string - directory in folder elements (default - default)
+     * */
+    public function importElement($name, $directory = "default")
+    {
+        require_once "../app/view/elements/" . $directory . "/" . $name . ".php";
+    }
+
     /**
      * Method which load current view
      * @param $view (load this view)
@@ -64,23 +75,14 @@ class Controller extends Config
             $address = $this->address();
             echo '<script src="' . $address . 'js/jquery-3.2.1.min.js" type="text/JavaScript"></script>';
             echo '<script src="' . $address . 'js/ajaxController.js" type="text/JavaScript"></script>';
-            for ($i = 0; $i < (count($table)); $i++) {
+            for ($i = 0; $i < (count($table)); $i++)
                 echo '<script src="' . $address . 'js/' . $table[$i] . 'Controller.js" type="text/JavaScript"></script>';
-            }
         }
     }
 
     public function address()
     {
-        $how = count(explode('/', $this->getURI()));
-        $address = NULL;
-        if ($how > 4) {
-            for ($j = 0; $j < ($how - 4); $j++) {
-                $add = "../";
-                $address = $address . $add;
-            }
-        }
-        return $address;
+        return "/".$this->config["system"]["default-directory"]."/public/";
     }
 
     /**
@@ -107,9 +109,9 @@ class Controller extends Config
      * @param data - string
      * @param class - array string
      * */
-    public function addA($name, $data, $class = null)
+    public function buildLink($name, $data, $class = null)
     {
-        echo "<a href='" . $this->createHyperReference() . $data . "'";
+        echo "<a href='" . $this->baseLink() . $data . "'";
         if (count($class) == 0) echo ">" . $name . "</a>";
         else {
             echo "class='";
@@ -120,14 +122,10 @@ class Controller extends Config
         }
     }
 
-    public function getURI()
-    {
-        return $_SERVER["REQUEST_URI"];
-    }
 
-    public function createHyperReference()
+    public function baseLink()
     {
-        $address = explode("/", $this->getURI());
+        $address = explode("/", $_SERVER["REQUEST_URI"]);
         $data = "/";
         for ($i = 1; $i < (count($address) - 2); $i++) $data .= $address[$i] . "/";
         return $data;
@@ -141,7 +139,7 @@ class Controller extends Config
     {
         echo "<form method='post'";
         if ($action == null) echo ">";
-        else echo " action='" . $this->createHyperReference() . $action . "'>";
+        else echo " action='" . $this->baseLink() . $action . "'>";
     }
 
     public function endForm()

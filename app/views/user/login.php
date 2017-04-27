@@ -2,7 +2,7 @@
 
 </header>
 <nav>
-    <?= $this->addA("Return to index", "home/index") ?>
+    <?= $this->buildLink("Return to index", "home/index") ?>
 </nav>
 <article>
     <?= $this->startForm("home/index");?>

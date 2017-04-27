@@ -61,22 +61,26 @@ class Database extends Config
     /**
      * Method which create a new query
      * @param $table string data about load table
-     * @param $choose integer select type of query (1 SELECT, 2 INSERT, 3 DELETE, 4 UPDATE)
-     * @param $modify integer degree modify the query (implicitly null)
-     * @param $data array string. Additional data (implicitly empty array)
-     * @param $sort integer sort score query (implicitly 0)
+     * @param $choose string select type of query (SELECT, INSERT, DELETE, UPDATE)
+     * @param $modify string degree modify the query "a" - and "o" - or (default null)
+     * @param $data array string. Additional data (default empty array)
+     * @param $sort integer sort score query (default 0)
      * @return string return generated query
      */
     public function createQuery($table, $choose, $data = [], $modify = NULL, $sort = 0)
     {
         switch ($choose) {
-            case 1:
+            case "SELECT":
+            case "select":
                 return $this->createSelectQuery($table, $modify, $data, $sort);
-            case 2:
+            case "INSERT":
+            case "insert":
                 return $this->createInsertQuery($table, $data);
-            case 3:
+            case "DELETE":
+            case "delete":
                 return $this->createDeleteQuery($table, $modify, $data);
-            case 4:
+            case "UPDATE":
+            case "update":
                 return $this->createUpdateQuery($table, $modify, $data);
             default:
                 echo 'Bad choose query. Check second param in call method createQuery()';
@@ -87,8 +91,8 @@ class Database extends Config
     /**
      * Method where create SELECT query
      * @param $table string. Data about table
-     * @param $modify
-     * @param $data array string. Additional data (implicitly empty array)
+     * @param $modify string degree modify the query "a" - and "o" - or (default null)
+     * @param $data array string. Additional data (default empty array)
      * @param $sort integer. Data about sort
      * @return string. Generated query
      * */
