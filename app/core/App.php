@@ -31,7 +31,7 @@ class App
     }
 
     /**
-     * Function where get url
+     * Method where get url
      * */
     public function parseUrl()
     {

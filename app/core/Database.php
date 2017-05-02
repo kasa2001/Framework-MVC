@@ -49,7 +49,6 @@ class Database extends Config
      */
     public function __construct()
     {
-        parent::__construct();
         $this->data = $this->getFormData();
         $this->server = $this->config['database']['host'];
         $this->login = $this->config['database']['user'];
@@ -69,18 +68,15 @@ class Database extends Config
      */
     public function createQuery($table, $choose, $data = [], $modify = NULL, $sort = 0)
     {
+        $choose = strtoupper($choose);
         switch ($choose) {
             case "SELECT":
-            case "select":
                 return $this->createSelectQuery($table, $modify, $data, $sort);
             case "INSERT":
-            case "insert":
                 return $this->createInsertQuery($table, $data);
             case "DELETE":
-            case "delete":
                 return $this->createDeleteQuery($table, $modify, $data);
             case "UPDATE":
-            case "update":
                 return $this->createUpdateQuery($table, $modify, $data);
             default:
                 echo 'Bad choose query. Check second param in call method createQuery()';
@@ -166,7 +162,7 @@ class Database extends Config
     public function where($query, $i, $n, $data = [], $modify)
     {
         $query .= "WHERE `";
-        for (; $i < $n; $i ++) {
+        for (; $i < $n; $i++) {
             if ($i + 1 == $n) return $this->warning();
             else {
                 $query .= $data[$i] . "` = '" . $data[$n - 1] . "' ";
@@ -368,22 +364,21 @@ class Database extends Config
         } else echo '<b>Warning:</b> Session can write only one record <br>';
     }
 
-    public function getFormData($data = [], $i=0)
+    public function getFormData($data = [], $i = 0)
     {
-        if ($_POST != null){
-            foreach ($_POST as $value){
-                $data [$i]=$value;
+        if ($_POST != null) {
+            foreach ($_POST as $value) {
+                $data [$i] = $value;
                 $i++;
             }
             if ($this->analyze($data)) return null;
             else return $data;
-        }
-        else return null;
+        } else return null;
     }
-    public function analyze($data) {
-        foreach ($data as $datum){
-            if (strpos($datum,"--") || strpos($datum,"'")) return true;
-        }
+
+    public function analyze($data)
+    {
+        foreach ($data as $datum) if (strpos($datum, "--") || strpos($datum, "'")) return true;
         return false;
     }
 }
