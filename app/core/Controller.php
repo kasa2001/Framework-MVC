@@ -82,7 +82,7 @@ class Controller extends Config
 
     public function address()
     {
-        return "/".$this->config["system"]["default-directory"]."/public/";
+        return "/" . $this->config["system"]["default-directory"] . "/public/";
     }
 
     /**
@@ -105,9 +105,9 @@ class Controller extends Config
 
     /**
      * Method create element a in view
-     * @param name - string
-     * @param data - string
-     * @param class - array string
+     * @param $name string
+     * @param $data string
+     * @param $class array string (default null)
      * */
     public function buildLink($name, $data, $class = null)
     {
@@ -146,4 +146,15 @@ class Controller extends Config
     {
         echo "</form>";
     }
+
+    public function loginButton($text)
+    {
+        echo "<button class='login'>".$text."</button>";
+    }
+
+    public function registryButton($text)
+    {
+        echo "<button class='registry'>".$text."</button>";
+    }
+
 }

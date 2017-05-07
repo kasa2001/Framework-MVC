@@ -333,7 +333,7 @@ class Database extends Config
     }
 
     /**
-     * Method which informing about problem whit key word WHERE
+     * Method which informing about problem whit sql key word WHERE
      * @return null
      * */
     public function warningWhere()
@@ -371,14 +371,8 @@ class Database extends Config
                 $data [$i] = $value;
                 $i++;
             }
-            if ($this->analyze($data)) return null;
+            if (Security::analyzeSQL($data)) return null;
             else return $data;
         } else return null;
-    }
-
-    public function analyze($data)
-    {
-        foreach ($data as $datum) if (strpos($datum, "--") || strpos($datum, "'")) return true;
-        return false;
     }
 }

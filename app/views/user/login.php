@@ -8,7 +8,7 @@
     <?= $this->startForm("home/index");?>
         <input name="nick" type="text" placeholder="nick">
         <input name="password" type="password" placeholder="password">
-        <button>Register</button>
-        <button>Login</button>
+        <?=$this->loginButton("Logowanie");?>
+        <?=$this->registryButton("Rejestracja");?>
     <?= $this->endForm();?>
 </article>

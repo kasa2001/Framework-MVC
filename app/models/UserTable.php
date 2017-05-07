@@ -3,9 +3,10 @@
 class UserTable extends Model
 {
     protected $database;
-/**
- * Construct create new object -> Model
- * */
+
+    /**
+     * Construct create new object -> Model
+     * */
     public function __construct()
     {
         $this->database = new Model($this->table(), $this->login());
@@ -25,9 +26,17 @@ class UserTable extends Model
         return $columns;
     }
 
-    public function login(){
+    public function login()
+    {
         $columns[0] = 'PASSWORD';
         $columns[1] = 'Nick';
         return $columns;
+    }
+
+    public function registration()
+    {
+        $columns[0] = 'EMAIL';
+        $columns[1] = 'Nick';
+        $columns[2] = 'PASSWORD';
     }
 }
