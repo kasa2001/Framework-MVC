@@ -7,5 +7,5 @@ To do:
 6. JavaScript API (for JSON) (finish)
 - Model 
 - empty view
-7. Create error view
+7. Create error view (finish)
 8. Protection against SQL Injections (finish)

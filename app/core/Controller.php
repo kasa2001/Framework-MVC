@@ -22,7 +22,7 @@ class Controller extends Config
      * @param $css (table where is save all CSS from view)
      * @param $js (table where is save all JavaScript from view)
      * */
-    public function view($view, $data = [], $css, $js)
+    public function view($view, $data = [], $css=null, $js=null)
     {
         require_once '../app/views/layout/layout.php';
     }
@@ -35,7 +35,7 @@ class Controller extends Config
      * */
     public function importElement($name, $directory = "default")
     {
-        require_once "../app/view/elements/" . $directory . "/" . $name . ".php";
+        require_once "../app/views/elements/" . $directory . "/" . $name . ".php";
     }
 
     /**
@@ -55,7 +55,7 @@ class Controller extends Config
      */
     public function loadCss($css)
     {
-        if ($css != "") {
+        if ($css != "" and $css!=null) {
             $table = explode(' ', $css);
             $address = $this->address();
             for ($i = 0; $i < (count($table)); $i++) {
@@ -70,7 +70,7 @@ class Controller extends Config
      */
     public function loadJs($js)
     {
-        if ($js != "") {
+        if ($js != "" and $js!=null) {
             $table = explode(' ', $js);
             $address = $this->address();
             echo '<script src="' . $address . 'js/jquery-3.2.1.min.js" type="text/JavaScript"></script>';

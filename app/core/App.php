@@ -4,7 +4,7 @@
 class App
 {
     protected $controller = 'home';
-    protected $method = 'index';
+    protected $method = 'error';
     protected $params = [];
 
     public function __construct()
@@ -24,7 +24,13 @@ class App
             if (method_exists($this->controller, $url[1])) {
                 $this->method = $url[1];
                 unset($url[1]);
+            } else {
+                $this->controller = "home";
+                $this->controller = new $this->controller;
             }
+        } else {
+            $this->controller = "home";
+            $this->controller = new $this->controller;
         }
         $this->params = $url ? array_values($url) : [];
         call_user_func_array([$this->controller, $this->method], $this->params);

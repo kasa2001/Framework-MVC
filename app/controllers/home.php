@@ -13,4 +13,7 @@ class Home extends Controller
         $this->view('home/index', NULL, $css, $js);
     }
 
+    public function error(){
+        $this->view("home/error",NULL);
+    }
 }
