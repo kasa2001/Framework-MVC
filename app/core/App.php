@@ -9,9 +9,6 @@ class App
 
     public function __construct()
     {
-        /**
-         * Routing
-         * */
         $url = $this->parseUrl();
         if (file_exists('../app/controllers/' . $url[0] . '.php')) {
             $this->controller = $url[0];

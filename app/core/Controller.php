@@ -19,10 +19,10 @@ class Controller extends Config
      * Method which load layout
      * @param $view - add this view
      * @param $data - current information
-     * @param $css (table where is save all CSS from view)
-     * @param $js (table where is save all JavaScript from view)
+     * @param $css string
+     * @param $js string
      * */
-    public function view($view, $data = [], $css=null, $js=null)
+    public function view($view, $data = [], $css = null, $js = null)
     {
         require_once '../app/views/layout/layout.php';
     }
@@ -40,8 +40,8 @@ class Controller extends Config
 
     /**
      * Method which load current view
-     * @param $view (load this view)
-     * @param $data (data for current view)
+     * @param $view string
+     * @param $data array
      * */
 
     public function content($view, $data = [])
@@ -51,11 +51,11 @@ class Controller extends Config
 
     /**
      * Method which add CSS
-     * @param $css (table where is save all CSS from view)
+     * @param $css string
      */
     public function loadCss($css)
     {
-        if ($css != "" and $css!=null) {
+        if ($css != "" or $css != null) {
             $table = explode(' ', $css);
             $address = $this->address();
             for ($i = 0; $i < (count($table)); $i++) {
@@ -66,11 +66,11 @@ class Controller extends Config
 
     /**
      * Method which add JavaScript
-     * @param $js (table where is save all JavaScript from view)
+     * @param $js string
      */
     public function loadJs($js)
     {
-        if ($js != "" and $js!=null) {
+        if ($js != "" or $js != null) {
             $table = explode(' ', $js);
             $address = $this->address();
             echo '<script src="' . $address . 'js/jquery-3.2.1.min.js" type="text/JavaScript"></script>';
@@ -80,6 +80,10 @@ class Controller extends Config
         }
     }
 
+    /**
+     * Method generate main address
+     * @return string
+     * */
     public function address()
     {
         return "/" . $this->config["system"]["default-directory"] . "/public/";
@@ -93,11 +97,17 @@ class Controller extends Config
         echo "<title>" . $this->config["system"]["default-title"] . "</title>";
     }
 
+    /**
+     * Method load charset for page
+     * */
     public function loadCharset()
     {
         echo "<meta charset='" . $this->config["system"]["charset"] . "'>";
     }
 
+    /**
+     * Method load language for page
+     * */
     public function loadLanguage()
     {
         echo "lang='" . $this->config["system"]["default-language"] . "'";
@@ -123,6 +133,10 @@ class Controller extends Config
     }
 
 
+    /**
+     * Method create attribute href
+     * @return string
+     * */
     public function baseLink()
     {
         $address = explode("/", $_SERVER["REQUEST_URI"]);
@@ -132,7 +146,7 @@ class Controller extends Config
     }
 
     /**
-     * Methods create form
+     * Method opens form
      * @param $action string - link to another page
      * */
     public function startForm($action = null)
@@ -142,19 +156,27 @@ class Controller extends Config
         else echo " action='" . $this->baseLink() . $action . "'>";
     }
 
+    /**
+     * Method end form
+     * */
     public function endForm()
     {
         echo "</form>";
     }
 
-    public function loginButton($text)
+    /**
+     * Method create in page button
+     * @param $text string
+     * @param $class array
+     * */
+    public function button($text, $class = [])
     {
-        echo "<button class='login'>".$text."</button>";
-    }
-
-    public function registryButton($text)
-    {
-        echo "<button class='registry'>".$text."</button>";
+        echo "<button ";
+        if ($class != null) {
+            echo "class='";
+            for ($i = 0; $i < count($class); $i++) echo $class[$i] . " ";
+        }
+        echo ">" . $text . "</button>";
     }
 
 }

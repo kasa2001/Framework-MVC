@@ -364,6 +364,12 @@ class Database extends Config
         } else echo '<b>Warning:</b> Session can write only one record <br>';
     }
 
+    /**
+     * Method get data from form
+     * @param $data array (default null)
+     * @param $i int
+     * @return array
+     * */
     public function getFormData($data = [], $i = 0)
     {
         if ($_POST != null) {
