@@ -9,7 +9,7 @@ class UserTable extends Model
      * */
     public function __construct()
     {
-        $this->database = new Model($this->table(), $this->registration());
+        $this->database = new Model($this->table(), $this->login());
     }
 
     public function table()

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * All new classes must extends which class Controller. You can in this moment profit a function included in framework
+ * All new classes must extends which class Controller. You can in this moment profit a method included in framework
  * */
 class Home extends Controller
 {
@@ -13,7 +13,8 @@ class Home extends Controller
         $this->view('home/index', NULL, $css, $js);
     }
 
-    public function error(){
-        $this->view("home/error",NULL);
+    public function error()
+    {
+        $this->view("home/error", NULL);
     }
 }

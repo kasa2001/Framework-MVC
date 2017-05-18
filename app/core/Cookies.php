@@ -4,15 +4,15 @@ class Cookies
 {
     public function __construct($name, $value, $time = null)
     {
-        if ($time==null)
+        if ($time == null)
             setcookie($name, $value);
         else
             setcookie($name, $value, $time);
     }
 
-    public function getFromCookies($data)
+    public function getFromCookies($name)
     {
-        return $_COOKIE[$data];
+        return $_COOKIE[$name];
     }
 
     public function destroyCookies($name)
@@ -20,7 +20,8 @@ class Cookies
         unset($_COOKIE[$name]);
     }
 
-    public function changeCookieValue($name, $value){
+    public function changeCookieValue($name, $value)
+    {
         setcookie($name, $value);
     }
 }

@@ -23,9 +23,9 @@ class Security
      * */
     private static function addLog($attack)
     {
-        $file=("../app/logs/".$attack.".log");
-        $FILE=fopen($file,"a");
-        fwrite($FILE, "Atak z dnia: ".date("d/m/y")." godziny: ".date("h:i:sa")."\n");
+        $file = ("../app/logs/" . $attack . ".log");
+        $FILE = fopen($file, "a");
+        fwrite($FILE, "Atak z dnia: " . date("d/m/y") . " godziny: " . date("h:i:sa") . "\n");
         fclose($FILE);
     }
 }

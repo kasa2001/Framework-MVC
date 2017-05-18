@@ -49,6 +49,7 @@ class Database extends Config
      */
     public function __construct()
     {
+        parent::__construct();
         $this->data = $this->getFormData();
         $this->server = $this->config['database']['host'];
         $this->login = $this->config['database']['user'];
@@ -344,7 +345,7 @@ class Database extends Config
 
     /**
      * Method which send query to database and get result query
-     * @param $connect Database data about connection
+     * @param $connect mysqli data about connection
      * @return object return score of query
      * */
     public function request($connect)
