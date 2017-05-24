@@ -1,1 +1,2 @@
 alert("JavaScript");
+alert("java");
