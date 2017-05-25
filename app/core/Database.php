@@ -36,7 +36,7 @@ class Database extends Config
     protected $query;
 
     /**
-     * @var $server string. It is a data about data to create query
+     * @var $data array. It is a data about data to create query
      * */
     protected $data;
 
@@ -60,22 +60,23 @@ class Database extends Config
     /**
      * Method which create a new query
      * @param $table string data about load table
-     * @param $choose integer select type of query (1 SELECT, 2 INSERT, 3 DELETE, 4 UPDATE)
-     * @param $modify integer degree modify the query (implicitly 0)
-     * @param $data array string. Additional data (implicitly empty array)
-     * @param $sort integer sort score query (implicitly 0)
+     * @param $choose string select type of query (SELECT, INSERT, DELETE, UPDATE)
+     * @param $modify string degree modify the query "a" - and "o" - or (default null)
+     * @param $data array string. Additional data (default empty array)
+     * @param $sort integer sort score query (default 0)
      * @return string return generated query
      */
     public function createQuery($table, $choose, $data = [], $modify = NULL, $sort = 0)
     {
+        $choose = strtoupper($choose);
         switch ($choose) {
-            case 1:
+            case "SELECT":
                 return $this->createSelectQuery($table, $modify, $data, $sort);
-            case 2:
+            case "INSERT":
                 return $this->createInsertQuery($table, $data);
-            case 3:
+            case "DELETE":
                 return $this->createDeleteQuery($table, $modify, $data);
-            case 4:
+            case "UPDATE":
                 return $this->createUpdateQuery($table, $modify, $data);
             default:
                 echo 'Bad choose query. Check second param in call method createQuery()';
@@ -86,8 +87,8 @@ class Database extends Config
     /**
      * Method where create SELECT query
      * @param $table string. Data about table
-     * @param $modify
-     * @param $data array string. Additional data (implicitly empty array)
+     * @param $modify string degree modify the query "a" - and "o" - or (default null)
+     * @param $data array string. Additional data (default empty array)
      * @param $sort integer. Data about sort
      * @return string. Generated query
      * */
@@ -161,13 +162,13 @@ class Database extends Config
     public function where($query, $i, $n, $data = [], $modify)
     {
         $query .= "WHERE `";
-        for (; $i < $n; $i += 2) {
+        for (; $i < $n; $i++) {
             if ($i + 1 == $n) return $this->warning();
             else {
-                $query .= $data[$i] . "` = '" . $data[$i + 1] . "' ";
+                $query .= $data[$i] . "` = '" . $data[$n - 1] . "' ";
                 if (($i + 1) < ($n - 1) and $modify == "a") $query .= "AND `";
                 else if (($i + 1) < ($n - 1) and $modify == "o") $query .= "OR `";
-                else break;
+                $n--;
             }
         }
         return $query;
@@ -327,12 +328,12 @@ class Database extends Config
      * */
     public function warning()
     {
-        echo 'Warning: Too small array in call method createQuery()';
+        echo 'Warning: Too small array in method to create query';
         return NULL;
     }
 
     /**
-     * Method which informing about problem whit key word WHERE
+     * Method which informing about problem whit sql key word WHERE
      * @return null
      * */
     public function warningWhere()
@@ -343,12 +344,11 @@ class Database extends Config
 
     /**
      * Method which send query to database and get result query
-     * @param $connect Database data about connection
      * @return object return score of query
      * */
-    public function request($connect)
+    public function request()
     {
-        return $connect->query($this->query);
+        return $this->connect->query($this->query);
     }
 
     /**
@@ -356,10 +356,11 @@ class Database extends Config
      * */
     public function getResultRequest()
     {
-        if ($this->data->num_rows==1){
+        if ($this->data->num_rows == 1) {
             $this->session = new Session();
             $this->result = $this->data->fetch_assoc();
             $this->session->writeToSession($this->result);
-        }else echo '<b>Warning:</b> Session can write only one record <br>';
+        }else
+            Security::addLog("sql");
     }
 }

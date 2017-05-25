@@ -3,29 +3,35 @@
 
 class Model extends Database
 {
-    protected $connection;
     protected $table;
     protected $columns = [];
-    protected $type;
 
-    public function __construct($table, $columns = [],$data = [])
+    public function __construct($table, $columns = [], $data = [])
     {
-        /*
-         * Construct in test.
-         *
-         * */
-        $data[0]='zenon';
-        $data[1]='zenon';
-        $this->connection = new Database();
-        $this->columns=$columns;
-        $this->table=$table;
-        $this->connection->query = $this->createQuery($this->table, 1, array_merge($this->columns, $data),"a");
-//        $this->connection->query= $this->modifyWhere($this->connection->query,$data,"a");
-        $this->connection->data = $this->connection->request($this->connection->connect);
-//        $this->connection->getResultRequest();
-//        print_r($this->connection->data);
-//        print_r($_SESSION);
+        parent::__construct();
+        $this->data = $data;
+        $this->columns = $columns;
+        $this->table = $table;
+        $this->query = $this->createQuery($this->table, "SeLeCt", array_merge($this->columns, $this->data), "a");
+        $this->data = $this->request();
+        $this->getResultRequest();
+    }
 
+    /**
+     * Method get data from form
+     * @param $data array (default null)
+     * @param $i int
+     * @return array
+     * */
+    public function getFormData($data = [], $i = 0)
+    {
+        if ($_POST != null) {
+            foreach ($_POST as $value) {
+                $data [$i] = $value;
+                $i++;
+            }
+            return Security::slashSQLForm($data);
+        } else return null;
     }
 
 }

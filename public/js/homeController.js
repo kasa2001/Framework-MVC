@@ -1,2 +1,3 @@
-alert("JavaScript");
-alert("java");
+$(document).ready(function () {
+
+});

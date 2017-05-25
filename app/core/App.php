@@ -4,14 +4,11 @@
 class App
 {
     protected $controller = 'home';
-    protected $method = 'index';
+    protected $method = 'error';
     protected $params = [];
 
     public function __construct()
     {
-        /**
-         * Routing
-         * */
         $url = $this->parseUrl();
         if (file_exists('../app/controllers/' . $url[0] . '.php')) {
             $this->controller = $url[0];
@@ -24,14 +21,20 @@ class App
             if (method_exists($this->controller, $url[1])) {
                 $this->method = $url[1];
                 unset($url[1]);
+            } else {
+                $this->controller = "home";
+                $this->controller = new $this->controller;
             }
+        } else {
+            $this->controller = "home";
+            $this->controller = new $this->controller;
         }
         $this->params = $url ? array_values($url) : [];
         call_user_func_array([$this->controller, $this->method], $this->params);
     }
 
     /**
-     * Function where get url
+     * Method where get url
      * */
     public function parseUrl()
     {
