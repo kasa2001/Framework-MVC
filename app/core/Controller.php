@@ -74,7 +74,6 @@ class Controller extends Config
             $table = explode(' ', $js);
             $address = $this->address();
             echo '<script src="' . $address . 'js/jquery-3.2.1.min.js" type="text/JavaScript"></script>';
-            echo '<script src="' . $address . 'js/ajaxController.js" type="text/JavaScript"></script>';
             for ($i = 0; $i < (count($table)); $i++)
                 echo '<script src="' . $address . 'js/' . $table[$i] . 'Controller.js" type="text/JavaScript"></script>';
         }
@@ -89,6 +88,10 @@ class Controller extends Config
         return "/" . $this->config["system"]["default-directory"] . "/public/";
     }
 
+
+    public function checkAddress(){
+        return $_GET["url"];
+    }
     /**
      * Method load title page
      * */

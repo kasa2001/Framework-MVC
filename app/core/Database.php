@@ -50,7 +50,6 @@ class Database extends Config
     public function __construct()
     {
         parent::__construct();
-        $this->data = $this->getFormData();
         $this->server = $this->config['database']['host'];
         $this->login = $this->config['database']['user'];
         $this->password = $this->config['database']['password'];
@@ -329,7 +328,7 @@ class Database extends Config
      * */
     public function warning()
     {
-        echo 'Warning: Too small array in call method createQuery()';
+        echo 'Warning: Too small array in method to create query';
         return NULL;
     }
 
@@ -345,41 +344,30 @@ class Database extends Config
 
     /**
      * Method which send query to database and get result query
-     * @param $connect mysqli data about connection
      * @return object return score of query
      * */
-    public function request($connect)
+    public function request()
     {
-        return $connect->query($this->query);
+        return $this->connect->query($this->query);
     }
 
     /**
      * Method get data with object mysqli_result to session
+     * @param $cookieName string
+     * @param $i int
      * */
-    public function getResultRequest()
+    public function getResultRequest($cookieName, $i=0)
     {
         if ($this->data->num_rows == 1) {
             $this->session = new Session();
             $this->result = $this->data->fetch_assoc();
             $this->session->writeToSession($this->result);
-        } else echo '<b>Warning:</b> Session can write only one record <br>';
-    }
-
-    /**
-     * Method get data from form
-     * @param $data array (default null)
-     * @param $i int
-     * @return array
-     * */
-    public function getFormData($data = [], $i = 0)
-    {
-        if ($_POST != null) {
-            foreach ($_POST as $value) {
-                $data [$i] = $value;
+        } else if ($this->data->num_rows > 1){
+            while ($this->result = $this->data->fetch_assoc()){
+                Cookies::cookieValue($cookieName.$i, $this->result);
                 $i++;
             }
-            if (Security::analyzeSQL($data)) return null;
-            else return $data;
-        } else return null;
+        }else
+            Security::addLog("sql");
     }
 }

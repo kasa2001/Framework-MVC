@@ -6,17 +6,33 @@ class Model extends Database
     protected $table;
     protected $columns = [];
 
-    public function __construct($table, $columns = [],$data = [])
+    public function __construct($table, $columns = [], $data = [])
     {
         parent::__construct();
-        $this->columns=$columns;
-        $this->table=$table;
-        $this->query = $this->createQuery($this->table, "select", array_merge($this->columns, $this->data),"a");
-//        $this->connection->data = $this->connection->request($this->connection->connect);
-//        $this->connection->result = $this->connection->getResultRequest();
-//        print_r($this->query);
-//        print_r($this->connection->result);
+        $this->data = $data;
+        $this->columns = $columns;
+        $this->table = $table;
+        $this->query = $this->createQuery($this->table, "SeLeCt", array_merge($this->columns, $this->data), "a");
+        $this->data = $this->request();
+        $this->getResultRequest("cookie");
+        Cookies::getFromCookies("cookie",0);
+    }
 
+    /**
+     * Method get data from form
+     * @param $data array (default null)
+     * @param $i int
+     * @return array
+     * */
+    public function getFormData($data = [], $i = 0)
+    {
+        if ($_POST != null) {
+            foreach ($_POST as $value) {
+                $data [$i] = $value;
+                $i++;
+            }
+            return Security::slashSQLForm($data);
+        } else return null;
     }
 
 }

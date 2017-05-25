@@ -1,27 +1,23 @@
 <?php
-
+/*
+ * Class to do later. You can to better plan this out
+ * */
 class Cookies
 {
-    public function __construct($name, $value, $time = null)
+    public static function getFromCookies($name,$i)
     {
-        if ($time == null)
-            setcookie($name, $value);
-        else
-            setcookie($name, $value, $time);
+        return $_COOKIE[$name.$i];
     }
 
-    public function getFromCookies($name)
-    {
-        return $_COOKIE[$name];
-    }
-
-    public function destroyCookies($name)
+    public static function destroyCookies($name)
     {
         unset($_COOKIE[$name]);
     }
 
-    public function changeCookieValue($name, $value)
+    public static function cookieValue($name, $value, $time=null)
     {
-        setcookie($name, $value);
+        if ($time==null)
+            setcookie($name, $value);
+        else setcookie($name,$value,$time);
     }
 }
