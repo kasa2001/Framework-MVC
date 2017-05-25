@@ -14,8 +14,7 @@ class Model extends Database
         $this->table = $table;
         $this->query = $this->createQuery($this->table, "SeLeCt", array_merge($this->columns, $this->data), "a");
         $this->data = $this->request();
-        $this->getResultRequest("cookie");
-        Cookies::getFromCookies("cookie",0);
+        $this->getResultRequest();
     }
 
     /**

@@ -353,20 +353,13 @@ class Database extends Config
 
     /**
      * Method get data with object mysqli_result to session
-     * @param $cookieName string
-     * @param $i int
      * */
-    public function getResultRequest($cookieName, $i=0)
+    public function getResultRequest()
     {
         if ($this->data->num_rows == 1) {
             $this->session = new Session();
             $this->result = $this->data->fetch_assoc();
             $this->session->writeToSession($this->result);
-        } else if ($this->data->num_rows > 1){
-            while ($this->result = $this->data->fetch_assoc()){
-                Cookies::cookieValue($cookieName.$i, $this->result);
-                $i++;
-            }
         }else
             Security::addLog("sql");
     }
