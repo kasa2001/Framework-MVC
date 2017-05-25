@@ -1,13 +1,14 @@
 <?php
 
 /**
- * All new classes must extends which class Controller. You can in this moment profit a method included in framework
+ * All new classes must extends which class Controller.
  * */
 class Home extends Controller
 {
     public function index($name = '')
     {
-        $user = $this->loadModel('User');
+        if ($_POST!=null)
+            $user = $this->loadModel('User');
         $css = "main home";
         $js = "main home";
         $this->view('home/index', NULL, $css, $js);
