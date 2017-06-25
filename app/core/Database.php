@@ -360,7 +360,56 @@ class Database extends Config
             $this->session = new Session();
             $this->result = $this->data->fetch_assoc();
             $this->session->writeToSession($this->result);
-        }else
+        } else
             Security::addLog("sql");
+    }
+
+    /**
+     * Method add new columns
+     * @param $columns array
+     * @param $type array
+     * @param $isNull array
+     * @param  $primaryKey int
+     * @param  $autoIncrement int
+     * @return string
+     */
+    public function addColumns($columns, $type, $isNull, $primaryKey, $autoIncrement)
+    {
+        $query = "";
+        for ($i = 0; $i < count($columns); $i++) {
+            $query .= " " . $columns[$i] . " " . $type[$i] . " " . $isNull[$i];
+            if ($primaryKey == $i)
+                $query .= " primary key";
+            if ($autoIncrement[$i] == 1)
+                $query .= " auto_increment";
+            if ($i < (count($columns) - 1)) $query .= ",";
+        }
+        return $query;
+    }
+
+    public function createTable($table, $columns, $type, $isNull, $primaryKey, $autoIncrement)
+    {
+        return $query = "create table `" . $table . "` (" . $this->addColumns($columns, $type, $isNull, $primaryKey, $autoIncrement) . ");";
+    }
+
+    // Odpytywanie bazy. Na razie todo zwracanie ilości kolumn w tabeli
+
+    public function getTable($table = null)
+    {
+        $this->query = "SELECT TABLE_NAME FROM information_schema.TABLES where `TABLE_SCHEMA` = '" . $this->config['database']['database'] . "'";
+        if ($table !== null) {
+            $this->query .= " and TABLE_NAME = '" . $table . "'";
+        }
+    }
+
+
+    public function getTableColumns($table)
+    {
+        $this->query .= "SELECT COLUMN_NAME FROM information_schema.COLUMNS where TABLE_NAME = '" . $table . "'";
+    }
+
+    public function getQuery()
+    {
+        return $this->query;
     }
 }
