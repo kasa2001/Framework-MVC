@@ -40,8 +40,6 @@ class Database extends Config
      * */
     protected $data;
 
-    protected $session;
-
     protected $result;
 
     /**
@@ -55,14 +53,15 @@ class Database extends Config
         $this->password = $this->config['database']['password'];
         $this->base = $this->config['database']['database'];
         $this->connect = new mysqli($this->server, $this->login, $this->password, $this->base);
+        $this->connect->set_charset("utf8");
     }
 
     /**
      * Method which create a new query
      * @param $table string data about load table
      * @param $choose string select type of query (SELECT, INSERT, DELETE, UPDATE)
-     * @param $modify string degree modify the query "a" - and "o" - or (default null)
      * @param $data array string. Additional data (default empty array)
+     * @param $modify string degree modify the query "a" - and "o" - or (default null)
      * @param $sort integer sort score query (default 0)
      * @return string return generated query
      */
@@ -344,72 +343,51 @@ class Database extends Config
 
     /**
      * Method which send query to database and get result query
-     * @return object return score of query
+     * @param $query string
      * */
-    public function request()
+    public function request($query = null)
     {
-        return $this->connect->query($this->query);
+        if ($query === null)
+            $this->data = $this->connect->query($this->query);
+        else
+            $this->data = $this->connect->query($query);
     }
 
     /**
      * Method get data with object mysqli_result to session
      * */
-    public function getResultRequest()
+    public function saveData()
     {
         if ($this->data->num_rows == 1) {
-            $this->session = new Session();
             $this->result = $this->data->fetch_assoc();
-            $this->session->writeToSession($this->result);
+            Session::writeToSession($this->result);
         } else
             Security::addLog("sql");
     }
 
     /**
-     * Method add new columns
-     * @param $columns array
-     * @param $type array
-     * @param $isNull array
-     * @param  $primaryKey int
-     * @param  $autoIncrement int
-     * @return string
-     */
-    public function addColumns($columns, $type, $isNull, $primaryKey, $autoIncrement)
+     * Method get data from result query
+     * */
+    public function getData()
     {
-        $query = "";
-        for ($i = 0; $i < count($columns); $i++) {
-            $query .= " " . $columns[$i] . " " . $type[$i] . " " . $isNull[$i];
-            if ($primaryKey == $i)
-                $query .= " primary key";
-            if ($autoIncrement[$i] == 1)
-                $query .= " auto_increment";
-            if ($i < (count($columns) - 1)) $query .= ",";
-        }
-        return $query;
+        return $this->data->fetch_assoc();
     }
 
-    public function createTable($table, $columns, $type, $isNull, $primaryKey, $autoIncrement)
+    /**
+     * Method return 1 if query is empty or 0 if not empty
+     * @return boolean
+     * */
+    public function isEmpty()
     {
-        return $query = "create table `" . $table . "` (" . $this->addColumns($columns, $type, $isNull, $primaryKey, $autoIncrement) . ");";
+        return $this->data->num_rows == 0;
     }
 
-    // Odpytywanie bazy. Na razie todo zwracanie ilości kolumn w tabeli
-
-    public function getTable($table = null)
+    /**
+     * Method return one record from query result
+     * @return array
+     * */
+    public function echoResult()
     {
-        $this->query = "SELECT TABLE_NAME FROM information_schema.TABLES where `TABLE_SCHEMA` = '" . $this->config['database']['database'] . "'";
-        if ($table !== null) {
-            $this->query .= " and TABLE_NAME = '" . $table . "'";
-        }
-    }
-
-
-    public function getTableColumns($table)
-    {
-        $this->query .= "SELECT COLUMN_NAME FROM information_schema.COLUMNS where TABLE_NAME = '" . $table . "'";
-    }
-
-    public function getQuery()
-    {
-        return $this->query;
+        return $this->data->fetch_assoc();
     }
 }

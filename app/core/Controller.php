@@ -32,8 +32,9 @@ class Controller extends Config
      * Method add element to view
      * @param $name string - file name
      * @param $directory string - directory in folder elements (default - default)
+     * @param $data Model
      * */
-    public function importElement($name, $directory = "default")
+    public function importElement($name, $directory = "default", $data = null)
     {
         require_once "../app/views/elements/" . $directory . "/" . $name . ".php";
     }
@@ -88,7 +89,6 @@ class Controller extends Config
         return "/" . $this->config["system"]["default-directory"] . "/public/";
     }
 
-
     public function checkAddress()
     {
         if ($_GET == null)
@@ -139,7 +139,6 @@ class Controller extends Config
             echo "'>" . $name . "</a>";
         }
     }
-
 
     /**
      * Method create attribute href
@@ -192,19 +191,31 @@ class Controller extends Config
         echo ">" . $text . "</button>";
     }
 
-    public function getJSON($file)
+    /**
+     * Method get data from file without loading all page
+     * @param $file string
+     * @param $model Model
+     * */
+    public function getJSON($file, $model)
     {
         require_once "../app/views/API/" . $file . ".php";
     }
 
+    /**
+     * Method redirect to another page. If $where is null redirect to preview page
+     * @param $where string
+     * */
     public function redirect($where = null)
     {
         if ($where == null)
-            header("Location: " . $_SERVER['HTTP_REFERER']);
+            header("Location: " . $this->checkPreviewWebSite());
         else
             header("Location: " . $this->baseLink() . $where);
     }
 
+    /**
+     * Method redirecting if someone try go to file with JSON
+     * */
     public function checkIsJS()
     {
         if (!isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
@@ -213,5 +224,53 @@ class Controller extends Config
             else
                 $this->redirect();
         }
+    }
+
+    /**
+     * Method wears data from database to element
+     * @param $model Model
+     * @param $element array string
+     * @param $button boolean
+     * @param $name string
+     * */
+    public function generateDynamic($model, $element = [], $button = false, $name = null)
+    {
+        while ($result = $model->getData()) {
+            if (count($element) != 1)
+                echo "<" . $element[0] . ">";
+            foreach ($result as $r) {
+                if (count($element) == 1) echo "<" . $element . ">" . $r . "</" . $element . ">";
+                else echo "<" . $element[1] . ">" . $r . "</" . $element[1] . ">";
+            }
+            if ($button) echo "<" . $element[1] . "><button data-id = '" . $result["id"] . "'>" . $name . "</button></" . $element[1] . ">";
+            if (count($element) != 1)
+                echo "</" . $element[0] . ">";
+        }
+    }
+
+    /**
+     * Method return  not associative array
+     * @param $array array
+     * @return array
+     * */
+    public function indexedData($array)
+    {
+        $i=0;
+        $data = [];
+        foreach ($array as $value){
+            $data[$i]=$value;
+            $i++;
+        }
+        return $data;
+    }
+
+    /**
+     * Method return data about preview page
+     * @return string
+     * */
+    public function checkPreviewWebSite()
+    {
+        if (isset($_SERVER['HTTP_REFERER'])) return $_SERVER['HTTP_REFERER'];
+        else return null;
     }
 }

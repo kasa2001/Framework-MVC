@@ -17,9 +17,12 @@ class Session
      * Method write data to session
      * @param $data array
      * */
-    public function writeToSession($data)
+    public static function writeToSession($data)
     {
-        $_SESSION = $data;
+        foreach ($data as $key=>$datum){
+            if (!isset($_SESSION[$key]))
+                $_SESSION[$key]=$datum;
+        }
     }
 
     /**
@@ -27,16 +30,19 @@ class Session
      * @param $data string
      * @return session data from session where index is $data
      * */
-    public function getDataWithSession($data)
+    public static function getDataWithSession($data)
     {
-        return $_SESSION[$data];
+        if (isset($_SESSION[$data]))
+            return $_SESSION[$data];
+        else return null;
     }
 
     /**
      * Method kill session
      * */
-    public function destroySession()
+    public static function destroySession()
     {
         unset($_SESSION);
+        session_destroy();
     }
 }
